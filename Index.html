@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>С 8 Марта, любимая! 💐</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #ffd6e7 50%, #ffcce0 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .hearts-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            animation: float 6s ease-in infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .page {
+            display: none;
+            width: 100%;
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page1 {
+            text-align: center;
+        }
+
+        .page1 h1 {
+            font-size: 3.5em;
+            color: #d63384;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .btn-main {
+            background: linear-gradient(135deg, #ff6b9d 0%, #d63384 100%);
+            color: white;
+            border: none;
+            padding: 20px 50px;
+            font-size: 1.5em;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(214, 51, 132, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-main:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(214, 51, 132, 0.6);
+        }
+
+        .btn-main::before {
+            content: '💖';
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .btn-main::after {
+            content: '💖';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .page2 {
+            text-align: center;
+        }
+
+        .page2 h2 {
+            font-size: 2.5em;
+            color: #d63384;
+            margin-bottom: 20px;
+        }
+
+        .game-instructions {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(214, 51, 132, 0.2);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .game-progress {
+            font-size: 1.3em;
+            color: #d63384;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 5px;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+
+        .game-card {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #ff6b9d 0%, #d63384 100%);
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(214, 51, 132, 0.3);
+            user-select: none;
+        }
+
+        .game-card:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(214, 51, 132, 0.5);
+        }
+
+        .game-card.flipped {
+            background: white;
+            transform: rotateY(180deg);
+        }
+
+        .game-card.matched {
+            background: linear-gradient(135deg, #90EE90 0%, #32CD32 100%);
+            cursor: default;
+            animation: pulse 0.5s ease;
+        }
+
+        .game-card .content {
+            display: none;
+        }
+
+        .game-card.flipped .content,
+        .game-card.matched .content {
+            display: block;
+            transform: rotateY(180deg);
+        }
+
+        .btn-game-next {
+            display: none;
+            margin: 30px auto 0;
+            background: linear-gradient(135deg, #ff6b9d 0%, #d63384 100%);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.3em;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(214, 51, 132, 0.4);
+            transition: all 0.3s ease;
+            animation: bounce 1s ease infinite;
+        }
+
+        .btn-game-next.show {
+            display: block;
+        }
+
+        .btn-game-next:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(214, 51, 132, 0.6);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .page3 h2 {
+            text-align: center;
+            font-size: 2.5em;
+            color: #d63384;
+            margin-bottom: 40px;
+        }
+
+        .compliments-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .compliment-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .compliment-item {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(214, 51, 132, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .compliment-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 8px 30px rgba(214, 51, 132, 0.3);
+        }
+
+        .compliment-item.right:hover {
+            transform: translateX(-10px);
+        }
+
+        .compliment-btn {
+            background: linear-gradient(135deg, #ff8fb3 0%, #ff6b9d 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 25px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .compliment-btn:hover {
+            background: linear-gradient(135deg, #ff6b9d 0%, #d63384 100%);
+            transform: scale(1.05);
+        }
+
+        .compliment-text {
+            margin-top: 15px;
+            padding: 15px;
+            background: linear-gradient(135deg, #fff0f5 0%, #ffe4ec 100%);
+            border-radius: 10px;
+            color: #d63384;
+            font-size: 1.1em;
+            display: none;
+            animation: slideDown 0.5s ease;
+            border-left: 4px solid #ff6b9d;
+        }
+
+        .compliment-text.show {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn-next {
+            display: block;
+            margin: 40px auto 0;
+            background: linear-gradient(135deg, #ff6b9d 0%, #d63384 100%);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.3em;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(214, 51, 132, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .btn-next:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(214, 51, 132, 0.6);
+        }
+
+        .page4 {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        .page4 h2 {
+            font-size: 3em;
+            color: #d63384;
+            margin-bottom: 30px;
+            animation: bounce 1s ease infinite;
+            position: relative;
+            z-index: 10;
+        }
+
+        .congratulation-text {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(214, 51, 132, 0.3);
+            font-size: 1.3em;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .signature {
+            font-size: 1.8em;
+            color: #d63384;
+            font-style: italic;
+            margin-top: 30px;
+            animation: fadeIn 2s ease;
+            position: relative;
+            z-index: 10;
+        }
+
+        @media (max-width: 768px) {
+            .page1 h1 { font-size: 2em; }
+            .page2 h2 { font-size: 1.8em; }
+            .page3 h2 { font-size: 1.8em; }
+            .page4 h2 { font-size: 2em; }
+            .game-grid { 
+                grid-template-columns: repeat(10, 1fr); 
+                gap: 3px;
+                max-width: 100%;
+            }
+            .game-card { font-size: 1.2em; }
+            .compliments-grid { grid-template-columns: 1fr; gap: 20px; }
+            .btn-main { font-size: 1.2em; padding: 15px 40px; }
+            .congratulation-text { font-size: 1.1em; padding: 30px 20px; }
+        }
+
+        @media (max-width: 500px) {
+            .game-grid { 
+                grid-template-columns: repeat(10, 1fr); 
+                gap: 2px;
+            }
+            .game-card { font-size: 1em; border-radius: 4px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts-container" id="heartsContainer"></div>
+
+    <div class="container">
+        <div class="page page1 active" id="page1">
+            <h1>Почему именно ты? 💕</h1>
+            <button class="btn-main" onclick="goToPage(2)">нажми на меня</button>
+        </div>
+
+        <div class="page page2" id="page2">
+            <h2>🎮 Найди все пары! 🎮</h2>
+            <div class="game-instructions">
+                <p>Найди все одинаковые предметы! Открывай по 2 карточки за раз.</p>
+                <p>Когда найдешь пару - они останутся открытыми 💚</p>
+            </div>
+            <div class="game-progress">
+                Найдено пар: <span id="pairsFound">0</span> / 50
+            </div>
+            <div class="game-grid" id="gameGrid"></div>
+            <button class="btn-game-next" id="btnGameNext" onclick="goToPage(3)">
+                Молодец! Перейти дальше 💖
+            </button>
+        </div>
+
+        <div class="page page3" id="page3">
+            <h2>💖 Потому что ты... 💖</h2>
+            <div class="compliments-grid">
+                <div class="compliment-column">
+                    <div class="compliment-item">
+                        <button class="compliment-btn" onclick="showCompliment(this)">Ты красивая</button>
+                        <div class="compliment-text">Ты прекрасна во всем: в улыбке, в взгляде, в каждом движении! 💐</div>
+                    </div>
+                    <div class="compliment-item">
+                        <button class="compliment-btn" onclick="showCompliment(this)">Ты умная</button>
+                        <div class="compliment-text">Твой ум восхищает меня каждый день! 🌟</div>
+                    </div>
+                    <div class="compliment-item">
+                        <button class="compliment-btn" onclick="showCompliment(this)">Ты добрая</button>
+                        <div class="compliment-text">Твое доброе сердце делает мир лучше! 💗</div>
+                    </div>
+                    <div class="compliment-item">
+                        <button class="compliment-btn" onclick="showCompliment(this)">Ты заботливая</button>
+                        <div class="compliment-text">Твоя забота согревает меня каждый день! 🥰</div>
+                    </div>
+                    <div class="compliment-item">
+                        <button class="compliment-btn" onclick="showCompliment(this)">Ты вдохновляющая</button>
+                        <div class="compliment-text">С тобой я хочу становиться лучше! ✨</div>
+                    </div>
+                </div>
+                <div class="compliment-column">
+                    <div class="compliment-item right">
+                        <button class="compliment-btn" onclick="showCompliment(this)">Ты нежная</button>
+                        <div class="compliment-text">Твоя нежность — мое самое большое счастье! 🌸</div>
+                    </div>
+                    <div class="compliment-item right">
+                        <button class="compliment-btn" onclick="showCompliment(this)">Ты веселая</button>
+                        <div class="compliment-text">Твой смех — лучшая музыка для моих ушей! 😊</div>
+                    </div>
+                    <div class="compliment-item right">
+                        <button class="compliment-btn" onclick="showCompliment(this)">Ты сильная</button>
+                        <div class="compliment-text">Твоя сила духа восхищает меня! 💪</div>
+                    </div>
+                    <div class="compliment-item right">
+                        <button class="compliment-btn" onclick="showCompliment(this)">Ты уникальная</button>
+                        <div class="compliment-text">Такой как ты — больше нет во всей вселенной! 🌺</div>
+                    </div>
+                    <div class="compliment-item right">
+                        <button class="compliment-btn" onclick="showCompliment(this)">Ты любимая</button>
+                        <div class="compliment-text">Ты — любовь всей моей жизни! ❤️</div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn-next" onclick="goToPage(4)">Перейти к поздравлению 💌</button>
+        </div>
+
+        <div class="page page4" id="page4">
+            <h2>🌹 С 8 Марта, любимая! 🌹</h2>
+            <div class="congratulation-text">
+                <p>
+                    Моя дорогая, единственная и самая прекрасная женщина на свете!
+                </p>
+                <br>
+                <p>
+                    В этот весенний праздник хочу сказать тебе спасибо за то, что ты есть в моей жизни. 
+                    Ты наполняешь каждый мой день теплом, любовью и счастьем. Твоя улыбка освещает 
+                    мой путь, твоя поддержка дает мне силы, а твоя любовь делает меня самым счастливым 
+                    мужчиной на свете.
+                </p>
+                <br>
+                <p>
+                    Желаю тебе всегда оставаться такой же прекрасной, жизнерадостной и вдохновляющей. 
+                    Пусть каждый день приносит тебе радость, пусть сбываются все твои мечты, а рядом 
+                    всегда будут любящие и близкие люди.
+                </p>
+                <br>
+                <p>
+                    Ты заслуживаешь всего самого лучшего, самого красивого, самого чудесного! 
+                    Спасибо за твою любовь, заботу и понимание. Я бесконечно благодарен судьбе 
+                    за то, что она подарила мне тебя.
+                </p>
+                <br>
+                <p style="font-size: 1.2em; color: #d63384; font-weight: bold;">
+                    Люблю тебя больше всего на свете! 💕
+                </p>
+            </div>
+            <div class="signature">
+                Твой любимый муж, Нурислам 💝
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Создание летающих сердечек и цветочков (снизу вверх)
+        function createHearts() {
+            const container = document.getElementById('heartsContainer');
+            const hearts = ['💖', '', '💓', '', '💘', '', '💐', '🌹', '🌷', ''];
+            
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                container.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, 7000);
+            }, 300);
+        }
+
+        // Переключение страниц
+        function goToPage(pageNumber) {
+            // Скрываем все страницы
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(function(page) {
+                page.classList.remove('active');
+            });
+            
+            // Показываем нужную страницу
+            const targetPage = document.getElementById('page' + pageNumber);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+            
+            window.scrollTo(0, 0);
+            
+            // Инициализируем игру при переходе на страницу 2
+            if (pageNumber === 2) {
+                setTimeout(initGame, 100);
+            }
+        }
+
+        // Показ комплиментов
+        function showCompliment(button) {
+            const text = button.nextElementSibling;
+            text.classList.toggle('show');
+        }
+
+        // ИГРА "НАЙДИ ПАРУ"
+        let gameInitialized = false;
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let canFlip = true;
+
+        const emojis = [
+            '🌹', '', '', '🌻', '🌼', '', '🌱', '🍀', '', '',
+            '💗', '💖', '💕', '💝', '💘', '❤️', '💛', '', '💙', '',
+            '', '🤎', '💞', '💔', '❣️', '✨', '⭐', '🌟', '💫', '☀️',
+            '🌙', '🌤️', '🎀', '', '🎂', '🎊', '', '💍', '', '🔮',
+            '🌈', '', '🐝', '🐞', '', '️', '', '', '', ''
+        ];
+
+        function initGame() {
+            if (gameInitialized) return;
+            
+            const grid = document.getElementById('gameGrid');
+            if (!grid) return;
+            
+            grid.innerHTML = '';
+            
+            // Создаем пары (каждый эмодзи 2 раза)
+            let gameEmojis = [];
+            emojis.forEach(function(emoji) {
+                gameEmojis.push(emoji, emoji);
+            });
+            
+            // Перемешиваем
+            gameEmojis = shuffleArray(gameEmojis);
+            
+            // Создаем карточки
+            gameEmojis.forEach(function(emoji, index) {
+                const card = document.createElement('div');
+                card.className = 'game-card';
+                card.setAttribute('data-index', index);
+                card.setAttribute('data-emoji', emoji);
+                
+                const content = document.createElement('span');
+                content.className = 'content';
+                content.textContent =
