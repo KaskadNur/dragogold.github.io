@@ -8,15 +8,16 @@
 </head>
 <body>
     <div class="hearts-container" id="heartsContainer"></div>
+    <div class="fireworks-container" id="fireworksContainer"></div>
 
     <div class="container">
         <div class="page page1 active" id="page1">
             <h1>Почему именно ты? 💕</h1>
-            <button class="btn-main" onclick="goToPage(2)">нажми на меня</button>
+            <button class="btn-main" onclick="goToPage(2)">Нажми на меня</button>
         </div>
 
         <div class="page page2" id="page2">
-            <h2>🎮 Найди все пары! 🎮</h2>
+            <h2>Пройди эту мини игру и скажу почему именно ты 💗</h2>
             <div class="game-instructions">
                 <p>Найди все одинаковые предметы! Открывай по 2 карточки за раз.</p>
                 <p>Когда найдешь пару - они останутся открытыми 💚</p>
@@ -113,6 +114,28 @@
             </div>
             <div class="signature">
                 Твой любимый муж, Нурислам 💝
+            </div>
+            <button class="btn-next" onclick="goToPage(5)">Что дальше? 🎆</button>
+        </div>
+
+        <div class="page page5" id="page5">
+            <h2 class="firework-title">🎆 Мои поздравляшки! 🎆</h2>
+            <div class="final-message">
+                <p style="font-size: 1.5em; line-height: 1.8;">
+                    Что сегодня будем заказывать?<br>
+                    <span style="color: #d63384; font-weight: bold;">На твой выбор! 💗</span>
+                </p>
+                <br>
+                <p style="font-size: 1.2em;">
+                    🍕 Пицца<br>
+                    🍣 Суши<br>
+                    🍰 Торт<br>
+                    🍷 Или что-то особенное?
+                </p>
+                <br>
+                <p style="font-size: 1.3em; color: #d63384;">
+                    Выбирай, любимая! 💕
+                </p>
             </div>
         </div>
     </div>
