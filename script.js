@@ -1,7 +1,7 @@
 // Создание летающих сердечек и цветочков (снизу вверх)
 function createHearts() {
     const container = document.getElementById('heartsContainer');
-    const hearts = ['💖', '💗', '💓', '💕', '💘', '🌸', '💐', '🌹', '🌷', ''];
+    const hearts = ['💖', '', '💓', '', '💘', '', '💐', '🌹', '🌷', ''];
     
     setInterval(function() {
         const heart = document.createElement('div');
@@ -15,6 +15,73 @@ function createHearts() {
         setTimeout(function() {
             heart.remove();
         }, 7000);
+    }, 300);
+}
+
+// Создание салюта
+function createFirework(x, y) {
+    const container = document.getElementById('fireworksContainer');
+    const colors = ['#ff6b9d', '#d63384', '#ff8fb3', '#ffcce0', '#ffd6e7', '#ffffff', '#ffd700', '#ff69b4'];
+    
+    // Создаем центр салюта
+    const firework = document.createElement('div');
+    firework.className = 'firework';
+    firework.textContent = '🎆';
+    firework.style.left = x + 'px';
+    firework.style.top = y + 'px';
+    container.appendChild(firework);
+    
+    // Создаем частицы
+    for (let i = 0; i < 20; i++) {
+        setTimeout(function() {
+            const particle = document.createElement('div');
+            particle.className = 'firework-particle';
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            const angle = (i / 20) * 360;
+            const distance = 100 + Math.random() * 100;
+            const tx = Math.cos(angle * Math.PI / 180) * distance;
+            const ty = Math.sin(angle * Math.PI / 180) * distance;
+            
+            particle.style.setProperty('--tx', tx + 'px');
+            particle.style.setProperty('--ty', ty + 'px');
+            
+            container.appendChild(particle);
+            
+            setTimeout(function() {
+                particle.remove();
+            }, 1000);
+        }, i * 50);
+    }
+    
+    setTimeout(function() {
+        firework.remove();
+    }, 1500);
+}
+
+// Запуск салюта с двух сторон
+function startFireworks() {
+    const container = document.getElementById('fireworksContainer');
+    container.classList.add('active');
+    
+    // Запускаем салюты с левой и правой стороны
+    let count = 0;
+    const interval = setInterval(function() {
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+        
+        // Салют слева
+        createFirework(50 + Math.random() * 100, 100 + Math.random() * 200);
+        
+        // Салют справа
+        createFirework(screenWidth - 150 - Math.random() * 100, 100 + Math.random() * 200);
+        
+        count++;
+        if (count > 20) {
+            clearInterval(interval);
+        }
     }, 300);
 }
 
@@ -35,6 +102,11 @@ function goToPage(pageNumber) {
     if (pageNumber === 2) {
         setTimeout(initGame, 100);
     }
+    
+    // Запуск салюта на странице 5
+    if (pageNumber === 5) {
+        setTimeout(startFireworks, 500);
+    }
 }
 
 // Показ комплиментов
@@ -51,7 +123,7 @@ let canFlip = true;
 
 // 10 пар эмодзи (20 карточек total)
 const emojis = [
-    '🌹', '🌷', '', '🌻', '🌼', 
+    '🌹', '🌷', '', '🌻', '', 
     '💖', '💕', '💝', '❤️', '💗'
 ];
 
