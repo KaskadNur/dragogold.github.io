@@ -231,11 +231,13 @@
             box-shadow: 0 15px 40px rgba(214, 51, 132, 0.6);
         }
 
-        /* Страница 3 */
+        /* Страница 3 - убраны все декоративные элементы */
         .page3 {
             text-align: center;
             max-width: 800px;
             margin: 0 auto;
+            position: relative;
+            z-index: 10;
         }
 
         .page3 h2 {
@@ -243,6 +245,8 @@
             color: #d63384;
             margin-bottom: 30px;
             animation: bounce 1s ease infinite;
+            position: relative;
+            z-index: 10;
         }
 
         @keyframes bounce {
@@ -260,7 +264,7 @@
             color: #555;
             margin-bottom: 30px;
             position: relative;
-            z-index: 2;
+            z-index: 10;
         }
 
         .congratulation-text::before {
@@ -281,12 +285,7 @@
             margin-top: 30px;
             animation: fadeIn 2s ease;
             position: relative;
-            z-index: 2;
-        }
-
-        .hearts-decoration {
-            font-size: 2em;
-            margin: 20px 0;
+            z-index: 10;
         }
 
         /* Адаптивность */
@@ -363,7 +362,7 @@
             <button class="btn-next" onclick="goToPage(3)">Перейти к поздравлению 💌</button>
         </div>
 
-        <!-- Страница 3 -->
+        <!-- Страница 3 - без декоративных элементов по бокам -->
         <div class="page page3" id="page3">
             <h2>🌹 С 8 Марта, любимая! 🌹</h2>
             <div class="congratulation-text">
@@ -405,7 +404,7 @@
         function createHearts() {
             const container = document.getElementById('heartsContainer');
             // Добавил больше цветочков и разнообразия
-            const hearts = ['💖', '', '💓', '💕', '💘', '🌸', '💐', '🌹', '', '🌷', '💮', '🏵️'];
+            const hearts = ['💖', '', '💓', '💕', '💘', '🌸', '💐', '🌹', '', '🌷', '', '🏵️'];
             
             setInterval(() => {
                 const heart = document.createElement('div');
