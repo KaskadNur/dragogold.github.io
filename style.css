@@ -21,6 +21,20 @@ body {
     pointer-events: none;
 }
 
+.fireworks-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+    display: none;
+}
+
+.fireworks-container.active {
+    display: block;
+}
+
 .heart {
     position: absolute;
     font-size: 20px;
@@ -41,6 +55,47 @@ body {
     }
     100% {
         transform: translateY(-100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* Салют */
+.firework {
+    position: absolute;
+    font-size: 30px;
+    animation: explode 1.5s ease-out forwards;
+}
+
+@keyframes explode {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.5);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+.firework-particle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    animation: particle 1s ease-out forwards;
+}
+
+@keyframes particle {
+    0% {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty));
         opacity: 0;
     }
 }
@@ -367,11 +422,41 @@ body {
     z-index: 10;
 }
 
+/* Страница 5 - Финал с салютом */
+.page5 {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+}
+
+.firework-title {
+    font-size: 3.5em;
+    color: #d63384;
+    margin-bottom: 40px;
+    animation: bounce 1s ease infinite;
+    text-shadow: 2px 2px 10px rgba(214, 51, 132, 0.5);
+}
+
+.final-message {
+    background: white;
+    padding: 50px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(214, 51, 132, 0.3);
+    font-size: 1.3em;
+    line-height: 1.8;
+    color: #555;
+    position: relative;
+    z-index: 10;
+}
+
 @media (max-width: 768px) {
     .page1 h1 { font-size: 2em; }
     .page2 h2 { font-size: 1.8em; }
     .page3 h2 { font-size: 1.8em; }
     .page4 h2 { font-size: 2em; }
+    .firework-title { font-size: 2em; }
     .game-grid { 
         grid-template-columns: repeat(5, 1fr); 
         gap: 5px;
@@ -381,6 +466,7 @@ body {
     .compliments-grid { grid-template-columns: 1fr; gap: 20px; }
     .btn-main { font-size: 1.2em; padding: 15px 40px; }
     .congratulation-text { font-size: 1.1em; padding: 30px 20px; }
+    .final-message { font-size: 1.1em; padding: 30px 20px; }
 }
 
 @media (max-width: 500px) {
