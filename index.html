@@ -134,8 +134,115 @@
             transform: translateY(-50%);
         }
 
-        /* Страница 2 */
+        /* Страница 2 - Игра */
+        .page2 {
+            text-align: center;
+        }
+
         .page2 h2 {
+            font-size: 2.5em;
+            color: #d63384;
+            margin-bottom: 20px;
+        }
+
+        .game-instructions {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(214, 51, 132, 0.2);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .game-progress {
+            font-size: 1.3em;
+            color: #d63384;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 5px;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+
+        .game-card {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #ff6b9d 0%, #d63384 100%);
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(214, 51, 132, 0.3);
+            user-select: none;
+        }
+
+        .game-card:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(214, 51, 132, 0.5);
+        }
+
+        .game-card.flipped {
+            background: white;
+            transform: rotateY(180deg);
+        }
+
+        .game-card.matched {
+            background: linear-gradient(135deg, #90EE90 0%, #32CD32 100%);
+            cursor: default;
+            animation: pulse 0.5s ease;
+        }
+
+        .game-card .content {
+            display: none;
+        }
+
+        .game-card.flipped .content,
+        .game-card.matched .content {
+            display: block;
+            transform: rotateY(180deg);
+        }
+
+        .btn-game-next {
+            display: none;
+            margin: 30px auto 0;
+            background: linear-gradient(135deg, #ff6b9d 0%, #d63384 100%);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.3em;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(214, 51, 132, 0.4);
+            transition: all 0.3s ease;
+            animation: bounce 1s ease infinite;
+        }
+
+        .btn-game-next.show {
+            display: block;
+        }
+
+        .btn-game-next:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(214, 51, 132, 0.6);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Страница 3 - Комплименты */
+        .page3 h2 {
             text-align: center;
             font-size: 2.5em;
             color: #d63384;
@@ -231,8 +338,8 @@
             box-shadow: 0 15px 40px rgba(214, 51, 132, 0.6);
         }
 
-        /* Страница 3 - убраны все декоративные элементы */
-        .page3 {
+        /* Страница 4 - Поздравление */
+        .page4 {
             text-align: center;
             max-width: 800px;
             margin: 0 auto;
@@ -240,18 +347,13 @@
             z-index: 10;
         }
 
-        .page3 h2 {
+        .page4 h2 {
             font-size: 3em;
             color: #d63384;
             margin-bottom: 30px;
             animation: bounce 1s ease infinite;
             position: relative;
             z-index: 10;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
         }
 
         .congratulation-text {
@@ -265,17 +367,6 @@
             margin-bottom: 30px;
             position: relative;
             z-index: 10;
-        }
-
-        .congratulation-text::before {
-            content: '💐';
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 3em;
-            background: white;
-            padding: 0 20px;
         }
 
         .signature {
@@ -292,10 +383,25 @@
         @media (max-width: 768px) {
             .page1 h1 { font-size: 2em; }
             .page2 h2 { font-size: 1.8em; }
-            .page3 h2 { font-size: 2em; }
+            .page3 h2 { font-size: 1.8em; }
+            .page4 h2 { font-size: 2em; }
+            .game-grid { 
+                grid-template-columns: repeat(10, 1fr); 
+                gap: 3px;
+                max-width: 100%;
+            }
+            .game-card { font-size: 1.2em; }
             .compliments-grid { grid-template-columns: 1fr; gap: 20px; }
             .btn-main { font-size: 1.2em; padding: 15px 40px; }
             .congratulation-text { font-size: 1.1em; padding: 30px 20px; }
+        }
+
+        @media (max-width: 500px) {
+            .game-grid { 
+                grid-template-columns: repeat(10, 1fr); 
+                gap: 2px;
+            }
+            .game-card { font-size: 1em; border-radius: 4px; }
         }
     </style>
 </head>
@@ -310,8 +416,24 @@
             <button class="btn-main" onclick="goToPage(2)">нажми на меня</button>
         </div>
 
-        <!-- Страница 2 -->
+        <!-- Страница 2 - Игра "Найди пару" -->
         <div class="page page2" id="page2">
+            <h2>🎮 Найди все пары! 🎮</h2>
+            <div class="game-instructions">
+                <p>Найди все одинаковые предметы! Открывай по 2 карточки за раз.</p>
+                <p>Когда найдешь пару - они останутся открытыми 💚</p>
+            </div>
+            <div class="game-progress">
+                Найдено пар: <span id="pairsFound">0</span> / 50
+            </div>
+            <div class="game-grid" id="gameGrid"></div>
+            <button class="btn-game-next" id="btnGameNext" onclick="goToPage(3)">
+                Молодец! Перейти дальше 💖
+            </button>
+        </div>
+
+        <!-- Страница 3 - Комплименты -->
+        <div class="page page3" id="page3">
             <h2>💖 Потому что ты... 💖</h2>
             <div class="compliments-grid">
                 <div class="compliment-column">
@@ -359,11 +481,11 @@
                     </div>
                 </div>
             </div>
-            <button class="btn-next" onclick="goToPage(3)">Перейти к поздравлению 💌</button>
+            <button class="btn-next" onclick="goToPage(4)">Перейти к поздравлению 💌</button>
         </div>
 
-        <!-- Страница 3 - без декоративных элементов по бокам -->
-        <div class="page page3" id="page3">
+        <!-- Страница 4 - Поздравление -->
+        <div class="page page4" id="page4">
             <h2>🌹 С 8 Марта, любимая! 🌹</h2>
             <div class="congratulation-text">
                 <p>
@@ -403,8 +525,7 @@
         // Создание летающих сердечек и цветочков
         function createHearts() {
             const container = document.getElementById('heartsContainer');
-            // Добавил больше цветочков и разнообразия
-            const hearts = ['💖', '', '💓', '💕', '💘', '🌸', '💐', '🌹', '', '🌷', '', '🏵️'];
+            const hearts = ['💖', '💗', '💓', '💕', '💘', '🌸', '💐', '🌹', '🌷', '️'];
             
             setInterval(() => {
                 const heart = document.createElement('div');
@@ -428,6 +549,11 @@
             });
             document.getElementById('page' + pageNumber).classList.add('active');
             window.scrollTo(0, 0);
+            
+            // Если перешли на страницу с игрой, инициализируем её
+            if (pageNumber === 2 && !gameInitialized) {
+                initGame();
+            }
         }
 
         // Показ комплиментов
@@ -436,8 +562,40 @@
             text.classList.toggle('show');
         }
 
-        // Запуск анимации сердечек и цветочков
-        createHearts();
-    </script>
-</body>
-</html>
+        // ========== ИГРА "НАЙДИ ПАРУ" ==========
+        let gameInitialized = false;
+        let cards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let canFlip = true;
+
+        // 50 пар эмодзи (100 всего)
+        const emojis = [
+            '🌹', '', '🌷', '🌺', '🌻', '🌼', '💐', '️', '', '',
+            '', '💗', '', '💕', '', '💝', '', '❤️', '', '💛',
+            '💚', '💙', '💜', '🖤', '', '🤎', '💞', '💔', '❣️', '✨',
+            '⭐', '🌟', '💫', '', '', '🐝', '🐞', '🌙', '☀️', '🌤️',
+            '🎀', '🎁', '', '', '🎊', '👑', '💍', '💎', '🔮', ''
+        ];
+
+        function initGame() {
+            if (gameInitialized) return;
+            
+            const grid = document.getElementById('gameGrid');
+            grid.innerHTML = '';
+            
+            // Создаем пары (каждый эмодзи по 2 раза)
+            let gameEmojis = [];
+            emojis.forEach(emoji => {
+                gameEmojis.push(emoji, emoji);
+            });
+            
+            // Перемешиваем
+            gameEmojis = shuffleArray(gameEmojis);
+            
+            // Создаем карточки
+            gameEmojis.forEach((emoji, index) => {
+                const card = document.createElement('div');
+                card.className = 'game-card';
+                card.dataset.index = index;
+   
